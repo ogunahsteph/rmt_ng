@@ -1,0 +1,32 @@
+stages:
+  # a_get_data_service: 
+  #   cmd: python ${project_dir}src/loan_velocity/get_data.py --config=params.yaml
+  #   always_changed: true
+  #   deps:
+  #   - ${project_dir}src/loan_velocity/get_data.py
+  #   - ${project_dir}data/raw/loan_velocity_raw_bloom1.parquet
+  #   - ${project_dir}data/raw/loan_velocity_raw_bloom2.parquet
+  #   - ${project_dir}data/raw/loan_velocity_raw_solv.parquet
+  #   - ${project_dir}data/raw/loan_velocity_raw_tanda.parquet
+  #   - ${project_dir}data/raw/loan_velocity_raw_copia.parquet
+  #   - ${project_dir}data/raw/loan_velocity_raw_jumia.parquet
+  #   - ${project_dir}data/raw/loan_velocity_raw_mezzanine.parquet
+  #   - ${project_dir}data/raw/loan_velocity_raw_ac_group.parquet
+  #   - ${project_dir}data/raw/loan_velocity_raw_srds.parquet
+  
+  b_trigger_scoring:
+    cmd: python ${project_dir}src/data/remita_nigeria.py --config=params.yaml # --bvn=22273266088 --callback_url="https://callback/url/endpoint"
+    always_changed: true
+    deps:
+    - ${project_dir}src/data/remita_nigeria.py
+    outs:
+    - ${project_dir}${scoring_response_data_path_json}
+  
+  # c_pass_generated_limits_to_engineering:
+  #   cmd: python ${project_dir}src/models/scoring_pipeline_remita.py --config=params.yaml # --bvn=22273266088 --callback_url="https://callback/url/endpoint"
+  #   always_changed: true
+  #   deps:
+  #   - ${project_dir}src/models/scoring_pipeline_remita.py
+  #   - ${project_dir}${scoring_response_data_path_json}
+    # outs:
+    # - ${project_dir}data/interim/loan_velocity_clean_bloom1.parquet

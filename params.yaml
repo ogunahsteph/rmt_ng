@@ -1,0 +1,51 @@
+project_dir: ./
+
+db_credentials:
+  dwh_env: ["DWH_HOST", "DWH_PORT", "DWH_DB_NAME", "DWH_USER", "DWH_PASSWORD"]
+  remita_env: ["REMITA_HOST", "REMITA_PORT", "REMITA_DB_NAME", "REMITA_USER", "REMITA_PASSWORD"]
+  mifos_env: ["MIFOS_HOST", "MIFOS_PORT", "MIFOS_DB_NAME", "MIFOS_USER", "MIFOS_PASSWORD"]
+  airflow_env: ["AIRFLOW_HOST", "AIRFLOW_USER", "AIRFLOW_PASSWORD"]
+  remita_api_env: ["REMITA_API_HOST", "REMITA_API_USER", "REMITA_API_PASSWORD"]
+  path: .env
+
+scoring_response_data_path_json: 'data/processed/scoring_response.json'
+
+upload_data_config:
+  prefix: 'DWH'
+  schema: 'remita'
+  table: 'scoring_results_remita'
+  index: False
+  chunksize: 100
+  method: None
+  if_exists: 'fail' # 'append'
+
+airflow_api_config:
+  prefix: 'AIRFLOW'
+  scoring_script_name: 'Remita'
+  airflow_dag_path: 'data-pipelines/api/v1/dags/{}/dagRuns'
+  airflow_pipeline_name: 'scoring_pipeline_remita'
+  headers_content_type: 'application/json'
+  headers_accept: 'application/json'
+  conf_is_initial_run: "true"
+  verify: False
+  callback_url: "https://www.callback.com/url/endpoint"
+  trigger_api: False
+
+digital_api_config:
+  prefix: 'REMITA_API'
+  headers_content_type: 'application/json'
+  share_limits: False
+
+test_config: 
+  bvn: '22274409583' # "22175343201"
+ # "2227134531" "2220087024" "2220035547" "2225565149""2228748576" "2227915901" "2225542109" "2228380515"  "2224274740" 2225239611, "2226158742" "2227134533" "2227134535""2227134536" "2227134537" "92921" "2224452" "22273266088" "22415467832" "22228450575"
+  bvn_nos: ["22386515701", "22329724760", "22312111678", "22219089528", 
+            "22272581254", "22403268083", "22210636484", "22422834430", 
+            "22383444220", "22187480383", "22330767497", "22566509344", 
+            "22279791960", "22374136653", "22237205984", "22329236757", 
+            "22231999153", "22159706127", "22178794279", "22161076302", 
+            "22317896082", "22203493896", "22227979464", "22354326386", 
+            "22231561608", "22156181943", "22256973220", "22153417946", 
+            "22151967960", "22367362490", "22286202040", "22160339471", 
+            "22209333088", "22442504096", "22170014184", "22192189839", 
+            "22142602171", "22253049881", "22190745147","22210636484"]

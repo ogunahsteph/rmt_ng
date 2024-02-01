@@ -1,0 +1,25 @@
+schema: '2.0'
+stages:
+  b_trigger_scoring:
+    cmd: python ./src/data/remita_nigeria.py --config=params.yaml
+    deps:
+    - path: ./src/data/remita_nigeria.py
+      hash: md5
+      md5: 4e920625717da3a3b06272b110fd9d57
+      size: 56674
+    outs:
+    - path: ./data/processed/scoring_response.json
+      hash: md5
+      md5: a024f9367aae92c9b618c411e6954ee4
+      size: 207
+  c_pass_generated_limits_to_engineering:
+    cmd: python ./src/models/scoring_pipeline_remita.py --config=params.yaml
+    deps:
+    - path: ./data/processed/scoring_response.json
+      hash: md5
+      md5: 06eff257ccfd81560f04a4cf148cb9dd
+      size: 239
+    - path: ./src/models/scoring_pipeline_remita.py
+      hash: md5
+      md5: 5298d30d288c95c713f1a441650f0cae
+      size: 8418
